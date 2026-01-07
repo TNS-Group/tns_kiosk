@@ -116,7 +116,7 @@ Future<dynamic> postParse(
     final response = await http.post(
       url,
       headers: headers,
-      body: data != null ? json.encode(data) : null,
+      body: data == null ? null : json.encode(data),
     );
 
     if (response.statusCode == 200) {
@@ -334,6 +334,7 @@ Future<Teacher?> getTeacherSelf(String token) async {
     subject: data["main_subject"] as String?,
     token: token, // We pass the token back
     email: data["email_address"] as String?,
+    availability: availabilityFromCode(data["availability"] as int),
   );
 }
 
@@ -354,6 +355,7 @@ Future<Teacher?> getTeacher(int teacherId) async {
     suffix: data["postfix"] as String?,
     subject: data["main_subject"] as String?,
     email: data["email_address"] as String?,
+    availability: availabilityFromCode(data["availability"] as int),
   );
 }
 
@@ -372,6 +374,7 @@ Future<List<Teacher>> getTeacherList() async {
       suffix: item["postfix"] as String?,
       subject: item["main_subject"] as String?,
       email: item["email_address"] as String?,
+      availability: availabilityFromCode(item["availability"] as int),
     );
   }).toList();
 }
@@ -435,9 +438,9 @@ Future<Teacher?> login(
     prefix: data["prefix"] as String?,
     suffix: data["postfix"] as String?,
     subject: data["main_subject"] as String?,
-    token:
-        data["token"] as String?, // The server returns the new token on login
+    token: data["token"] as String?, // The server returns the new token on login
     email: data["email_address"] as String?,
+    availability: availabilityFromCode(data["availability"] as int),
   );
 }
 
@@ -486,6 +489,16 @@ Future<Map<String, dynamic>?> getTeacherPrefs(String token) async {
 //   );
 // }
 
+Future<void> notifyTeacher(int teacherId, String tabletSession) async {
+  await postParse(
+    "/api/notify",
+    params: {
+      "teacher_id": teacherId.toString(),
+      "tablet_session": tabletSession
+    }
+  );
+}
+
 Stream<Map<String, dynamic>> listenToTeacherEvents(String token) {
   return streamEvents(
     "/api/eventsTeacher",
@@ -516,45 +529,3 @@ Future<List<SchoolClass>> getClassesList() async {
     );
   }).toList();
 }
-
-// Upload
-// Future<int> uploadProfilePicture(XFile file, String token) async {
-//   const String path = "/api/uploadPicture";
-//
-//   try {
-//     late final Uri uri;
-//     if (globals.baseURL.startsWith('https://')) {
-//       uri = Uri.http(globals.baseURL.replaceFirst('https://', ''), path);
-//     } else if (globals.baseURL.startsWith('http://')) {
-//       uri = Uri.http(globals.baseURL.replaceFirst('http://', ''), path);
-//     }
-//
-//     var request = http.MultipartRequest('POST', uri)
-//       ..headers['Authorization'] = token
-//       ..headers['Content-Type'] = 'multipart/form-data';
-//
-//     request.files.add(
-//       await http.MultipartFile.fromPath(
-//         'file',
-//         file.path,
-//         contentType: http.MediaType(
-//           "image",
-//           file.name.replaceAll(RegExp('.*.'), '.'),
-//         ),
-//       ),
-//     );
-//
-//     final streamedResponse = await request.send();
-//     final response = await http.Response.fromStream(streamedResponse);
-//
-//     if (response.statusCode == 200) {
-//       return 0;
-//     } else {
-//       throw Exception("POST: ${uri.path} returned code ${response.statusCode}");
-//     }
-//   } catch (e) {
-//     print("(uploadProfilePicture) ERROR: $e");
-//   }
-//
-//   return -1;
-// }
