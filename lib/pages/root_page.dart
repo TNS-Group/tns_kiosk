@@ -330,143 +330,147 @@ class RootPageState extends State<RootPage> {
                                     }
                                   }
 
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    spacing: 8,
+                                  return Stack(
                                     children: [
-                                      Stack(
-                                        fit: StackFit.passthrough,
-                                        clipBehavior: Clip.none,
-          
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        spacing: 8,
                                         children: [
-                                          Container(
-                                            color: Colors.blue,
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              height: 186,
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 32,
-                                            bottom: -64,
-                                            child: CircleAvatar(
-                                              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                                              radius: 94,
-                                              child: CircleAvatar(
-                                                radius: 86,
-                                                backgroundImage: NetworkImage('${globals.baseURL}/api/profilePicture/${teacher.id}?cbuster=${_cacheBuster[teacher.id]}'),
-                                                // onBackgroundImageError: (error, stackTrace) {
-                                                //     return Icon(Icons.broken_image, size: 64, color: Theme.of(context).colorScheme.onSurface);
-                                                //   },
-          
-                                                // child: Image(
-                                                //   image: NetworkImage('${globals.baseURL}/api/profilePicture/${teacher.id}'),
-                                                //   fit: BoxFit.cover,
-                                                //   errorBuilder: (context, error, stackTrace) {
-                                                //     return Icon(Icons.broken_image, size: 64, color: Theme.of(context).colorScheme.onSurface);
-                                                //   },
-                                                // )
-                                                // child: FlutterLogo(size: 86,),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: 48,),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 42),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                // spacing: 4,
-                                                children: [
-                                                  Text(
-                                                    "${teacher.prefix} ${teacher.name}, ${teacher.suffix}", 
-                                                    textScaler: TextScaler.linear(2),
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w400
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    teacher.subject == null ? "Teacher" : "${teacher.subject} Teacher", 
-                                                    textScaler: TextScaler.linear(2 / 1.61),
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w400
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Text(teacher.availability.label,
-                                              style: TextStyle(
-                                                color: teacher.availability == Availability.available ? 
-                                                Colors.green :
-                                                Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Center(child: const Text("Current / Next Schedule")),
-                                      if (nextOrCurrentSchedule != null)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        child: ScheduleItem(
-                                          start: nextOrCurrentSchedule.timeIn,
-                                          end: nextOrCurrentSchedule.timeOut,
-                                          className: classes[nextOrCurrentSchedule.classId]!.name,
-                                          subject: nextOrCurrentSchedule.subject,
-                                          weekday: nextOrCurrentSchedule.weekday,
-                                          isBreak: nextOrCurrentSchedule.isBreak,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 42.0),
-                                          child: Row(
-                                            spacing: 16,
-                                            mainAxisAlignment: MainAxisAlignment.end,
+                                          Stack(
+                                            fit: StackFit.passthrough,
+                                            clipBehavior: Clip.none,
+                                                
                                             children: [
-                                              TextButton(
-                                                onPressed: (){
-                                                  Navigator.pop(context);
-                                                }, 
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16),
-                                                  child: const Text("Cancel"),
-                                                )
+                                              Container(
+                                                color: Colors.blue,
+                                                child: SizedBox(
+                                                  width: double.infinity,
+                                                  height: 186,
+                                                ),
                                               ),
-                                              FilledButton(
-                                                onPressed: teacher.availability != Availability.available ? null : (){
-                                                  Navigator.pop(context);
-                                                  notificationSent(teacherMap[teacher.id]!);
-                                                  print(_tabletToken);
-                                                  api.notifyTeacher(teacher.id, _tabletToken!).ignore();
-
-                                                  setState(() {
-                                                    cooldownStarted = DateTime.now();
-                                                    isOnCooldown = true;
-                                                  });
-
-                                                  Future.delayed(constants.cooldownDuration).then((_){
-                                                    setState(() {
-                                                      cooldownStarted = null;
-                                                      isOnCooldown = false;
-                                                    });
-                                                  }).ignore();
-                                                }, 
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16),
-                                                  child: teacher.availability != Availability.available ? Text("Cannot Noitfy") : Text("Notify"),
-                                                )
+                                              Positioned(
+                                                left: 32,
+                                                bottom: -64,
+                                                child: CircleAvatar(
+                                                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                                                  radius: 94,
+                                                  child: CircleAvatar(
+                                                    radius: 86,
+                                                    backgroundImage: NetworkImage('${globals.baseURL}/api/profilePicture/${teacher.id}?cbuster=${_cacheBuster[teacher.id]}'),
+                                                    // onBackgroundImageError: (error, stackTrace) {
+                                                    //     return Icon(Icons.broken_image, size: 64, color: Theme.of(context).colorScheme.onSurface);
+                                                    //   },
+                                                
+                                                    // child: Image(
+                                                    //   image: NetworkImage('${globals.baseURL}/api/profilePicture/${teacher.id}'),
+                                                    //   fit: BoxFit.cover,
+                                                    //   errorBuilder: (context, error, stackTrace) {
+                                                    //     return Icon(Icons.broken_image, size: 64, color: Theme.of(context).colorScheme.onSurface);
+                                                    //   },
+                                                    // )
+                                                    // child: FlutterLogo(size: 86,),
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ),
-                                        )
+                                          SizedBox(height: 48,),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 42),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    // spacing: 4,
+                                                    children: [
+                                                      Text(
+                                                        "${teacher.prefix} ${teacher.name}, ${teacher.suffix}", 
+                                                        textScaler: TextScaler.linear(2),
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w400
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        teacher.subject == null ? "Teacher" : "${teacher.subject} Teacher", 
+                                                        textScaler: TextScaler.linear(2 / 1.61),
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w400
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Text(teacher.availability.label,
+                                                  style: TextStyle(
+                                                    color: teacher.availability == Availability.available ? 
+                                                    Colors.green :
+                                                    Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                  )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Center(child: const Text("Current / Next Schedule")),
+                                          if (nextOrCurrentSchedule != null)
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: ScheduleItem(
+                                              start: nextOrCurrentSchedule.timeIn,
+                                              end: nextOrCurrentSchedule.timeOut,
+                                              className: classes[nextOrCurrentSchedule.classId]!.name,
+                                              subject: nextOrCurrentSchedule.subject,
+                                              weekday: nextOrCurrentSchedule.weekday,
+                                              isBreak: nextOrCurrentSchedule.isBreak,
+                                            ),
+                                          ),
+                                          // Expanded(
+                                          // )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 42.0),
+                                        child: Row(
+                                          spacing: 16,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            TextButton(
+                                              onPressed: (){
+                                                Navigator.pop(context);
+                                              }, 
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(16),
+                                                child: const Text("Cancel"),
+                                              )
+                                            ),
+                                            FilledButton(
+                                              onPressed: teacher.availability != Availability.available ? null : (){
+                                                Navigator.pop(context);
+                                                notificationSent(teacherMap[teacher.id]!);
+                                                print(_tabletToken);
+                                                api.notifyTeacher(teacher.id, _tabletToken!).ignore();
+                                
+                                                setState(() {
+                                                  cooldownStarted = DateTime.now();
+                                                  isOnCooldown = true;
+                                                });
+                                
+                                                Future.delayed(constants.cooldownDuration).then((_){
+                                                  setState(() {
+                                                    cooldownStarted = null;
+                                                    isOnCooldown = false;
+                                                  });
+                                                }).ignore();
+                                              }, 
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(16),
+                                                child: teacher.availability != Availability.available ? Text("Cannot Noitfy") : Text("Notify"),
+                                              )
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   );
