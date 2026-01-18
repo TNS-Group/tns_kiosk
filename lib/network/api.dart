@@ -144,7 +144,7 @@ Future<dynamic> optionsParse(
   try {
     late final Uri url;
     if (globals.baseURL.startsWith('https://')) {
-      url = Uri.http(globals.baseURL.replaceFirst('https://', ''), path);
+      url = Uri.https(globals.baseURL.replaceFirst('https://', ''), path);
     } else if (globals.baseURL.startsWith('http://')) {
       url = Uri.http(globals.baseURL.replaceFirst('http://', ''), path);
     }
@@ -187,7 +187,7 @@ Future<dynamic> deleteReq(
   try {
     late final Uri url;
     if (globals.baseURL.startsWith('https://')) {
-      url = Uri.http(globals.baseURL.replaceFirst('https://', ''), path, param);
+      url = Uri.https(globals.baseURL.replaceFirst('https://', ''), path, param);
     } else if (globals.baseURL.startsWith('http://')) {
       url = Uri.http(globals.baseURL.replaceFirst('http://', ''), path, param);
     }
