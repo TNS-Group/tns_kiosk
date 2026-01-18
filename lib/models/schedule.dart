@@ -8,14 +8,17 @@ class Schedule {
   TimeOfDay timeIn;
   TimeOfDay timeOut;
 
+  bool isBreak;
+
   Schedule(
-    this.id,
-    this.classId,
-    this.teacherId,
-    this.subject,
-    this.weekday,
-    this.timeIn,
-    this.timeOut,
+    this.id, 
+    this.classId, 
+    this.teacherId, 
+    this.subject, 
+    this.weekday, 
+    this.timeIn, 
+    this.timeOut, 
+    this.isBreak
   );
 
   @override

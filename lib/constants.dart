@@ -12,6 +12,8 @@ const unavailableAvailabilityTextColor = Color.fromARGB(255, 224, 139, 139);
 
 const opacityUnavailable = 0.4;
 
+const cooldownDuration = Duration(seconds: 10);
+
 final imageGradientAvailable = <Color>[
   Colors.black.withAlpha(200), 
   Colors.black.withAlpha(0), 

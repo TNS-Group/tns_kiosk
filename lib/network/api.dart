@@ -231,6 +231,7 @@ Future<Schedule?> getSchedule(int id) async {
     WeekDay.fromCode(data["weekday"] as int),
     TimeOfDay.fromDateTime(dtIn),
     TimeOfDay.fromDateTime(dtOut),
+    data["is_break"] as bool? ?? false
   );
 }
 
@@ -250,6 +251,7 @@ Future<int?> createSchedule(Schedule schedule, String token) async {
       "weekday": schedule.weekday.code,
       "time_in": timeIn,
       "time_out": timeOut,
+      "is_break": schedule.isBreak
     },
   );
 
@@ -272,6 +274,7 @@ Future<int?> editSchedule(Schedule schedule, String token) async {
       "weekday": schedule.weekday.code,
       "time_in": timeIn,
       "time_out": timeOut,
+      "is_break": schedule.isBreak
     },
   );
 
@@ -286,6 +289,34 @@ Future<int?> deleteSchedule(int id, String token) async {
   );
 
   return data?["id"] as int?;
+}
+
+Future<List<Schedule>> getAllSchedules() async {
+  List<dynamic>? data = await getParse(
+    "/api/allSchedules",
+    // param: {"teacher_id": teacherId.toString()},
+    headers: {"Content-Type": "application/json"},
+  );
+
+  if (data == null) {
+    return [];
+  }
+
+  return data.map((item) {
+    final dtIn = DateTime.parse("1970-01-01 ${item["time_in"]}");
+    final dtOut = DateTime.parse("1970-01-01 ${item["time_out"]}");
+
+    return Schedule(
+      item["id"] as int,
+      item["class_id"] as int,
+      item["teacher_id"] as int,
+      item["subject"] as String,
+      WeekDay.fromCode(item["weekday"] as int),
+      TimeOfDay.fromDateTime(dtIn),
+      TimeOfDay.fromDateTime(dtOut),
+      item["is_break"] as bool? ?? false
+    );
+  }).toList();
 }
 
 Future<List<Schedule>> getTeacherSchedules(int teacherId) async {
@@ -311,6 +342,7 @@ Future<List<Schedule>> getTeacherSchedules(int teacherId) async {
       WeekDay.fromCode(item["weekday"] as int),
       TimeOfDay.fromDateTime(dtIn),
       TimeOfDay.fromDateTime(dtOut),
+      item["is_break"] as bool? ?? false
     );
   }).toList();
 }

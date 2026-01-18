@@ -9,9 +9,7 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        # --- CONFIGURATION ---
         includeAndroid = false; # Set to true when you want the 8GB Android SDK
-        # ---------------------
 
         pkgs = import nixpkgs {
           inherit system;
