@@ -431,45 +431,52 @@ class RootPageState extends State<RootPage> {
                                         ],
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 42.0),
-                                        child: Row(
-                                          spacing: 16,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            TextButton(
-                                              onPressed: (){
-                                                Navigator.pop(context);
-                                              }, 
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(16),
-                                                child: const Text("Cancel"),
-                                              )
-                                            ),
-                                            FilledButton(
-                                              onPressed: teacher.availability != Availability.available ? null : (){
-                                                Navigator.pop(context);
-                                                notificationSent(teacherMap[teacher.id]!);
-                                                print(_tabletToken);
-                                                api.notifyTeacher(teacher.id, _tabletToken!).ignore();
-                                
-                                                setState(() {
-                                                  cooldownStarted = DateTime.now();
-                                                  isOnCooldown = true;
-                                                });
-                                
-                                                Future.delayed(constants.cooldownDuration).then((_){
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.surface,
+                                            borderRadius: BorderRadius.circular(16)
+                                          ),
+                                          child: Row(
+                                            spacing: 16,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              TextButton(
+                                                onPressed: (){
+                                                  Navigator.pop(context);
+                                                }, 
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16),
+                                                  child: const Text("Cancel"),
+                                                )
+                                              ),
+                                              FilledButton(
+                                                onPressed: teacher.availability != Availability.available ? null : (){
+                                                  Navigator.pop(context);
+                                                  notificationSent(teacherMap[teacher.id]!);
+                                                  print(_tabletToken);
+                                                  api.notifyTeacher(teacher.id, _tabletToken!).ignore();
+                                                                        
                                                   setState(() {
-                                                    cooldownStarted = null;
-                                                    isOnCooldown = false;
+                                                    cooldownStarted = DateTime.now();
+                                                    isOnCooldown = true;
                                                   });
-                                                }).ignore();
-                                              }, 
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(16),
-                                                child: teacher.availability != Availability.available ? Text("Cannot Noitfy") : Text("Notify"),
+                                                                        
+                                                  Future.delayed(constants.cooldownDuration).then((_){
+                                                    setState(() {
+                                                      cooldownStarted = null;
+                                                      isOnCooldown = false;
+                                                    });
+                                                  }).ignore();
+                                                }, 
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16),
+                                                  child: teacher.availability != Availability.available ? Text("Cannot Noitfy") : Text("Notify"),
+                                                )
                                               )
-                                            )
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       )
                                     ],
