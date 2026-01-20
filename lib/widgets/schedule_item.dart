@@ -21,8 +21,7 @@ class ScheduleItem extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment(0.5, 1.0),
             colors: [
-              Theme.of(context).colorScheme.surfaceContainer,
-              isBreak ? Colors.grey : Colors.blue
+              Theme.of(context).colorScheme.surfaceContainer, isBreak ? Colors.grey : Colors.blue
             ]
           )
         ),

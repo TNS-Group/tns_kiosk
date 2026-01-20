@@ -420,7 +420,8 @@ class RootPageState extends State<RootPage> {
                                             child: ScheduleItem(
                                               start: nextOrCurrentSchedule.timeIn,
                                               end: nextOrCurrentSchedule.timeOut,
-                                              className: classes[nextOrCurrentSchedule.classId]!.name,
+                                              className: classes[nextOrCurrentSchedule.classId]?.name ?? "",
+                                              // className: classes[nextOrCurrentSchedule.classId]!.name,
                                               subject: nextOrCurrentSchedule.subject,
                                               weekday: nextOrCurrentSchedule.weekday,
                                               isBreak: nextOrCurrentSchedule.isBreak,
